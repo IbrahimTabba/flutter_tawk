@@ -46,13 +46,26 @@ class _TawkState extends State<Tawk> {
     if (Platform.isIOS) {
       javascriptString = '''
         Tawk_API = Tawk_API || {};
-        Tawk_API.setAttributes($json);
+        Tawk_API.onLoad = function() {
+          Print.postMessage("Hello World being called from Javascript code");
+          Tawk_API.setAttributes($json);
+        };
+        Tawk_API.onStatusChange = function(status){
+          Print.postMessage(status);
+        };
+        Tawk_API.onChatEnded = function(){
+          Print.postMessage("chat ended");
+        };
       ''';
     } else {
       javascriptString = '''
         Tawk_API = Tawk_API || {};
         Tawk_API.onLoad = function() {
+          Print.postMessage("Hello World being called from Javascript code");
           Tawk_API.setAttributes($json);
+        };
+        Tawk_API.onStatusChange = function(status){
+          Print.postMessage(status);
         };
       ''';
     }
